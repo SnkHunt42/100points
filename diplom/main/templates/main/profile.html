@@ -1,0 +1,204 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load cusfilters %}
+
+{% block title %}
+    {{ title | default:"Профиль пользователя" }}
+{% endblock %}
+
+{% block content %}
+<h1>Профиль</h1>
+{% if user.role == 'master' or user.role == 'zamruk' %}
+    <form action="{% url 'export_statistics' %}" method="get">
+        <button type="submit" class="btn btn-outline-primary mt-2">Выгрузить статистику в Excel</button>
+    </form>
+{% endif %}
+{% if show_lives %}
+    <div>
+        {% for i in 1|to_range:4 %}
+            {% if user.lives >= i %}
+                <img src="{% static 'health/health.jpg' %}" alt="Жизнь" style="width:56px; height:56px;">
+            {% else %}
+                <img src="{% static 'health/nohealth.jpg' %}" alt="Нет жизни" style="width:56px; height:56px;">
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% if can_manage %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if confirm %}
+                <p>Вы уверены, что хотите удалить последнюю жизнь у студента?</p>
+                <button type="submit" name="confirm" class="btn btn-danger">Подтвердить</button>
+                <button type="submit" name="cancel" class="btn btn-secondary">Отказаться</button>
+            {% else %}
+                <input type="hidden" name="action" value="add">
+                <button type="submit" class="btn btn-success">Добавить жизнь</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="remove">
+            <button type="submit" class="btn btn-danger">Убрать жизнь</button>
+        </form>
+            {% endif %}
+    {% endif %}
+{% endif %}
+
+<p>ФИО: {{ user.last_name }} {{ user.first_name }} {{ user.fathersname | default:"" }}</p>
+{% if user.school %}
+    <p>Школа: {{ user.school }}</p>
+{% endif %}
+{% if user.number %}
+    <p>Номер телефона: {{ user.number }}</p>
+{% endif %}
+{% if user.experience %}
+    <p>Опыт: {{ user.experience.howlong }}</p>
+{% endif %}
+{% if user.curdir.exists %}
+    <p>Дисциплина:</p>
+    <ul>
+        {% for direction in user.curdir.all %}
+            <li>{{ direction.name }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Дисциплина не указана</p>
+{% endif %}
+{% if user.region %}
+    <p>Регион проживания: {{ user.region.name }}</p>
+{% endif %}
+{% if user.university %}
+    <p>Университет: {{ user.university.name }}</p>
+{% endif %}
+    {% if user.role %}
+        <p>Роль:
+            {% if user.role == 'participator' %}
+                Участник
+            {% elif user.role == 'tutor' %}
+                Тьютор
+            {% elif user.role == 'supervisor' %}
+                Наставник
+            {% elif user.role == 'areacurator' %}
+                Куратор направления
+            {% elif user.role == 'coordinator' %}
+                Координатор проекта
+            {% elif user.role == 'zamruk' %}
+                Заместитель руководителя проекта
+            {% elif user.role == 'master' %}
+                Руководитель проекта
+            {% elif user.role == 'newscreator' %}
+                Редактор новостей
+            {% else %}
+                Неизвестная роль
+            {% endif %}
+        </p>
+    {% endif %}
+
+<p>Текущее изображение профиля:</p>
+<div>
+    <img src="{{ profile_image_url }}" alt="Profile Image" width="128" height="128">
+</div>
+
+{% if is_owner %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="profile_image" class="form-label">Изменить изображение профиля:</label>
+        <input type="file" name="profile_image" id="profile_image" class="form-control" accept="image/*" onchange="showCropper(event)">
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    <a href="{% url 'delete_profile_image' %}" class="btn btn-danger">Удалить изображение</a>
+</form>
+
+<div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cropModalLabel">Обрезка изображения</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container" style="width: 100%; max-width: 512px; margin: 0 auto;">
+                    <img id="crop-image" src="" style="max-width: 100%;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="cropImage()">Обрезать и сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary mt-2">Выйти из аккаунта</button>
+</form>
+{% endif %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script>
+    let cropper;
+
+    function showCropper(event) {
+        const fileInput = event.target.files[0];
+        const cropImage = document.getElementById('crop-image');
+
+        if (fileInput) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                cropImage.src = e.target.result;
+                const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+                cropModal.show();
+                initializeCropper();
+            }
+            reader.readAsDataURL(fileInput);
+        }
+    }
+
+    function initializeCropper() {
+        const image = document.getElementById('crop-image');
+        if (cropper) {
+            cropper.destroy();
+        }
+        cropper = new Cropper(image, {
+            aspectRatio: 1,
+            viewMode: 1,
+            autoCropArea: 1,
+            dragMode: 'move',
+            background: false,
+            guides: false,
+            highlight: false,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            ready: function () {
+                const containerData = cropper.getContainerData();
+                const cropBoxSize = 300;
+                cropper.setCropBoxData({
+                    left: (containerData.width - cropBoxSize) / 2,
+                    top: (containerData.height - cropBoxSize) / 2,
+                    width: cropBoxSize,
+                    height: cropBoxSize
+                });
+            }
+        });
+    }
+
+    function cropImage() {
+        const croppedCanvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300
+        });
+        const croppedImage = croppedCanvas.toDataURL('image/png');
+
+        const croppedInput = document.createElement('input');
+        croppedInput.type = 'hidden';
+        croppedInput.name = 'cropped_image';
+        croppedInput.value = croppedImage;
+        document.querySelector('form').appendChild(croppedInput);
+
+        const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropModal'));
+        cropModal.hide();
+    }
+</script>
+{% endblock %}

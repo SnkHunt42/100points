@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+<h1>Распределение учеников по тьюторам</h1>
+<form method="GET" action="">
+    <input type="text" name="q" placeholder="Поиск по ФИО" value="{{ request.GET.q }}">
+
+    <br><label for="region">Регион:</label>
+    <br><select name="region" id="region">
+        <option value="">Выберите регион</option>
+        {% for region in regions %}
+            <option value="{{ region.id }}" {% if region.id == request.GET.region %}selected{% endif %}>
+                {{ region.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <br><button type="submit">Поиск</button>
+</form>
+
+<form method="POST" action="{% url 'assign_tutors' %}">
+    {% csrf_token %}
+    {% for student in students %}
+        <div class="student-container">
+            <input type="checkbox" name="students" value="{{ student.id }}">
+            <span>{{ student.last_name }} {{ student.first_name }} {{ student.fathersname }}</span>
+        </div>
+    {% empty %}
+        <p>Не найдено учеников</p>
+    {% endfor %}
+    <button type="submit">Распределить</button>
+</form>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .news-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .news-item {
+            background-color: #e0f7fa; /* Слегка голубой фон */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .profile-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .news-author h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .news-author span {
+            display: block;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .news-content h3 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+        }
+
+        .news-content p {
+            margin: 0 0 10px;
+        }
+
+        .news-image {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 5px;
+        }
+
+        .news-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .news-actions a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .news-actions a.delete {
+            background-color: #dc3545;
+        }
+
+        .add-news-btn {
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%
+        }
+    </style>
+
+    <h1>Новости</h1>
+    <a href="{% url 'news_create' %}" class="add-news-btn">Добавить новость</a>
+    <div class="news-container">
+        {% for item in news %}
+        <div class="news-item">
+            <div class="news-header">
+                <div class="news-author">
+                    <span>{{ item.created_at|date:"d Мая Y H:i" }}</span>
+                </div>
+            </div>
+            <div class="news-content">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.content }}</p>
+                {% for image in item.images.all %}
+                    <img src="{{ image.image.url }}" alt="{{ item.title }}" class="news-image"/>
+                {% endfor %}
+            </div>
+            <div class="news-actions">
+                <a href="{% url 'news_update' item.pk %}">Редактировать</a>
+                <a href="{% url 'news_delete' item.pk %}" class="delete">Удалить</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

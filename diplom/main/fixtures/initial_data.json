@@ -1,0 +1,896 @@
+[
+    {
+        "model": "main.regions",
+        "pk": 1,
+        "fields": {
+            "name": "Республика Адыгея (Адыгея)"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 2,
+        "fields": {
+            "name": "Республика Алтай"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 3,
+        "fields": {
+            "name": "Республика Башкортостан"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 4,
+        "fields": {
+            "name": "Республика Бурятия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 5,
+        "fields": {
+            "name": "Республика Дагестан"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 6,
+        "fields": {
+            "name": "Республика Ингушетия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 7,
+        "fields": {
+            "name": "Кабардино-Балкарская Республика"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 8,
+        "fields": {
+            "name": "Республика Калмыкия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 9,
+        "fields": {
+            "name": "Карачаево-Черкесская Республика"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 10,
+        "fields": {
+            "name": "Республика Карелия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 11,
+        "fields": {
+            "name": "Республика Коми"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 12,
+        "fields": {
+            "name": "Республика Крым"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 13,
+        "fields": {
+            "name": "Республика Марий Эл"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 14,
+        "fields": {
+            "name": "Республика Мордовия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 15,
+        "fields": {
+            "name": "Республика Саха (Якутия)"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 16,
+        "fields": {
+            "name": "Республика Северная Осетия - Алания"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 17,
+        "fields": {
+            "name": "Республика Татарстан (Татарстан)"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 18,
+        "fields": {
+            "name": "Республика Тыва"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 19,
+        "fields": {
+            "name": "Удмуртская Республика"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 20,
+        "fields": {
+            "name": "Республика Хакасия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 21,
+        "fields": {
+            "name": "Чеченская Республика"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 22,
+        "fields": {
+            "name": "Чувашская Республика - Чувашия"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 23,
+        "fields": {
+            "name": "Алтайский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 24,
+        "fields": {
+            "name": "Забайкальский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 25,
+        "fields": {
+            "name": "Камчатский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 26,
+        "fields": {
+            "name": "Краснодарский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 27,
+        "fields": {
+            "name": "Красноярский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 28,
+        "fields": {
+            "name": "Пермский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 29,
+        "fields": {
+            "name": "Приморский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 30,
+        "fields": {
+            "name": "Ставропольский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 31,
+        "fields": {
+            "name": "Хабаровский край"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 32,
+        "fields": {
+            "name": "Амурская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 33,
+        "fields": {
+            "name": "Архангельская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 34,
+        "fields": {
+            "name": "Астраханская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 35,
+        "fields": {
+            "name": "Белгородская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 36,
+        "fields": {
+            "name": "Брянская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 37,
+        "fields": {
+            "name": "Владимирская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 38,
+        "fields": {
+            "name": "Волгоградская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 39,
+        "fields": {
+            "name": "Вологодская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 40,
+        "fields": {
+            "name": "Воронежская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 41,
+        "fields": {
+            "name": "Ивановская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 42,
+        "fields": {
+            "name": "Иркутская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 43,
+        "fields": {
+            "name": "Калининградская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 44,
+        "fields": {
+            "name": "Калужская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 45,
+        "fields": {
+            "name": "Кемеровская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 46,
+        "fields": {
+            "name": "Кировская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 47,
+        "fields": {
+            "name": "Костромская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 48,
+        "fields": {
+            "name": "Курганская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 49,
+        "fields": {
+            "name": "Курская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 50,
+        "fields": {
+            "name": "Ленинградская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 51,
+        "fields": {
+            "name": "Липецкая область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 52,
+        "fields": {
+            "name": "Магаданская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 53,
+        "fields": {
+            "name": "Московская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 54,
+        "fields": {
+            "name": "Мурманская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 55,
+        "fields": {
+            "name": "Нижегородская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 56,
+        "fields": {
+            "name": "Новгородская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 57,
+        "fields": {
+            "name": "Новосибирская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 58,
+        "fields": {
+            "name": "Омская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 59,
+        "fields": {
+            "name": "Оренбургская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 60,
+        "fields": {
+            "name": "Орловская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 61,
+        "fields": {
+            "name": "Пензенская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 62,
+        "fields": {
+            "name": "Псковская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 63,
+        "fields": {
+            "name": "Ростовская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 64,
+        "fields": {
+            "name": "Рязанская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 65,
+        "fields": {
+            "name": "Самарская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 66,
+        "fields": {
+            "name": "Саратовская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 67,
+        "fields": {
+            "name": "Сахалинская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 68,
+        "fields": {
+            "name": "Свердловская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 69,
+        "fields": {
+            "name": "Смоленская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 70,
+        "fields": {
+            "name": "Тамбовская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 71,
+        "fields": {
+            "name": "Тверская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 72,
+        "fields": {
+            "name": "Томская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 73,
+        "fields": {
+            "name": "Тульская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 74,
+        "fields": {
+            "name": "Тюменская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 75,
+        "fields": {
+            "name": "Ульяновская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 76,
+        "fields": {
+            "name": "Челябинская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 77,
+        "fields": {
+            "name": "Ярославская область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 78,
+        "fields": {
+            "name": "Санкт-Петербург"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 79,
+        "fields": {
+            "name": "Севастополь"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 80,
+        "fields": {
+            "name": "Еврейская автономная область"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 81,
+        "fields": {
+            "name": "Ненецкий автономный округ"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 82,
+        "fields": {
+            "name": "Ханты-Мансийский автономный округ - Югра"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 83,
+        "fields": {
+            "name": "Чукотский автономный округ"
+        }
+    },
+    {
+        "model": "main.regions",
+        "pk": 84,
+        "fields": {
+            "name": "Ямало-Ненецкий автономный округ"
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 1,
+        "fields": {
+            "name": "Алтайский государственный гуманитарно-педагогический университет имени В.М. Шукшина",
+            "region_id": 2
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 2,
+        "fields": {
+            "name": "Алтайский государственный педагогический университет",
+            "region_id": 2
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 3,
+        "fields": {
+            "name": "Амурский гуманитарно-педагогический государственный университет",
+            "region_id": 32
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 4,
+        "fields": {
+            "name": "Армавирский государственный педагогический университет",
+            "region_id": 26
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 5,
+        "fields": {
+            "name": "Башкирский государственный педагогический университет им. М. Акмуллы",
+            "region_id": 3
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 6,
+        "fields": {
+            "name": "Благовещенский государственный педагогический университет",
+            "region_id": 32
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 7,
+        "fields": {
+            "name": "Волгоградский государственный социально-педагогический университет",
+            "region_id": 38
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 8,
+        "fields": {
+            "name": "Воронежский государственный педагогический университет",
+            "region_id": 40
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 9,
+        "fields": {
+            "name": "Глазовский государственный педагогический институт имени В.Г.Короленко",
+            "region_id": 19
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 10,
+        "fields": {
+            "name": "Дагестанский государственный педагогический университет",
+            "region_id": 5
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 11,
+        "fields": {
+            "name": "Красноярский государственный педагогический университет им. В.П. Астафьева",
+            "region_id": 27
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 12,
+        "fields": {
+            "name": "Липецкий государственный педагогический университет имени П. П. Семенова-Тян-Шанского",
+            "region_id": 51
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 13,
+        "fields": {
+            "name": "Мордовский государственный педагогический институт имени М.Е.Евсевьева",
+            "region_id": 14
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 14,
+        "fields": {
+            "name": "Московский государственный психолого-педагогический университет",
+            "region_id": 53
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 15,
+        "fields": {
+            "name": "Московский педагогический государственный университет",
+            "region_id": 53
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 16,
+        "fields": {
+            "name": "Набережночелнинский государственный педагогический университет",
+            "region_id": 17
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 17,
+        "fields": {
+            "name": "Нижегородский государственный педагогический университет имени Козьмы Минина",
+            "region_id": 55
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 18,
+        "fields": {
+            "name": "Новосибирский государственный педагогический университет",
+            "region_id": 57
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 19,
+        "fields": {
+            "name": "Омский государственный педагогический университет",
+            "region_id": 58
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 20,
+        "fields": {
+            "name": "Оренбургский государственный педагогический университет",
+            "region_id": 59
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 21,
+        "fields": {
+            "name": "Пермский государственный гуманитарно-педагогический университет",
+            "region_id": 28
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 22,
+        "fields": {
+            "name": "Самарский государственный социально-педагогический университет",
+            "region_id": 65
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 23,
+        "fields": {
+            "name": "Российский государственный педагогический университет имени А.И.Герцена",
+            "region_id": 79
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 24,
+        "fields": {
+            "name": "Российский государственный профессионально-педагогический университет",
+            "region_id": 79
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 25,
+        "fields": {
+            "name": "Томский государственный педагогический университет",
+            "region_id": 72
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 26,
+        "fields": {
+            "name": "Тульский государственный педагогический университет им. Л.Н. Толстого",
+            "region_id": 73
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 27,
+        "fields": {
+            "name": "Ульяновский государственный педагогический университет имени И.Н. Ульянова",
+            "region_id": 75
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 28,
+        "fields": {
+            "name": "Уральский государственный педагогический университет",
+            "region_id": 68
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 29,
+        "fields": {
+            "name": "Южно-Уральский государственный гуманитарно-педагогический университет",
+            "region_id": 76
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 30,
+        "fields": {
+            "name": "Чеченский государственный педагогический университет",
+            "region_id": 21
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 31,
+        "fields": {
+            "name": "Чувашский государственный педагогический университет имени И.Я.Яковлева",
+            "region_id": 22
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 32,
+        "fields": {
+            "name": "Шадринский государственный педагогический университет",
+            "region_id": 48
+        }
+    },
+    {
+        "model": "main.universities",
+        "pk": 33,
+        "fields": {
+            "name": "Ярославский государственный педагогический университет им. К.Д. Ушинского",
+            "region_id": 77
+        }
+    },
+    {
+        "model": "main.curdirs",
+        "pk": 1,
+        "fields": {
+            "name": "Русский язык"
+        }
+    },
+    {
+        "model": "main.curdirs",
+        "pk": 2,
+        "fields": {
+            "name": "Математика (профиль)"
+        }
+    },
+    {
+        "model": "main.curdirs",
+        "pk": 3,
+        "fields": {
+            "name": "История"
+        }
+    },
+    {
+        "model": "main.curdirs",
+        "pk": 4,
+        "fields": {
+            "name": "Обществознание"
+        }
+    },
+    {
+        "model": "main.curdirs",
+        "pk": 5,
+        "fields": {
+            "name": "Информатика"
+        }
+    },
+    {
+        "model": "main.curdirs",
+        "pk": 6,
+        "fields": {
+            "name": "Физика"
+        }
+    }
+]

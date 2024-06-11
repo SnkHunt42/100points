@@ -1,0 +1,336 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ other_user.last_name }} {{ other_user.first_name }} {{ other_user.fathersname }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 95%;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            height: calc(100vh - 40px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-arrow {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #0078ff;
+            font-size: 24px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .message .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .message-content {
+            background-color: #e5e5ea;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-content p {
+            margin: 0;
+        }
+
+        .sender {
+            justify-content: flex-end;
+        }
+
+        .sender .message-content {
+            background-color: #0078ff;
+            color: white;
+        }
+
+        .sender .message-content .file-name {
+            color: black;
+        }
+
+        .message-content small {
+            align-self: flex-end;
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            padding-top: 10px;
+            background-color: #fff;
+            position: sticky;
+            bottom: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-input textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            resize: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .chat-input button {
+            background-color: #0078ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .file-input, .sticker-input {
+            display: none;
+        }
+
+        .sticker-container {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            position: absolute;
+            bottom: 60px;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .sticker-container img {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .sticker-button {
+            background-color: #0078ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .show-stickers {
+            display: flex;
+        }
+
+        .file-item {
+            position: relative;
+            display: inline-block;
+            background-color: #f1f1f1;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .file-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .file-item .remove-file {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .file-item .file-name {
+            color: inherit;
+        }
+
+        .attached-file-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .attached-file-container .file-name {
+            color: black;
+        }
+    </style>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <a href="{% url 'messenger' %}" class="back-arrow">&larr;</a>
+            <a href="{% url 'profile' user_id=other_user.id %}">{{ other_user.last_name }} {{ other_user.first_name }} {{ other_user.fathersname }}</a>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            {% for message in messages %}
+                <div class="message {% if message.sender == request.user %}sender{% endif %}">
+                    {% if message.sender.profile_image %}
+                        <img class="profile-pic" src="{{ message.sender.profile_image.url }}" alt="Фото профиля">
+                    {% else %}
+                        <img class="profile-pic" src="{% static 'images/defaultpic.png' %}" alt="Фото профиля">
+                    {% endif %}
+                    <div class="message-content">
+                        {% if message.content %}
+                            <p>{{ message.content }}</p>
+                        {% endif %}
+                        {% if message.sticker %}
+                            <img src="{{ message.sticker }}" alt="Стикер" style="border-radius: 50%; object-fit: cover;">
+                        {% endif %}
+                        {% if message.file %}
+                            <div class="file-item">
+                                <a href="{{ message.file.url }}" class="file-name" download>{{ message.file.name|slice:"8:" }}</a>
+                            </div>
+                        {% endif %}
+                        <small><em>{{ message.mtime }}</em></small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <form method="post" class="chat-input" id="chat-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.content }}
+            <input type="file" name="file" class="file-input" id="file-input">
+            <input type="hidden" name="sticker" id="sticker-input">
+            <div class="attached-file-container" id="attached-file-container" style="display: none;">
+                <span id="attached-file-name"></span>
+                <button type="button" class="remove-file" onclick="removeAttachedFile()">×</button>
+            </div>
+            <button type="button" onclick="document.getElementById('file-input').click()">📎</button>
+            <button type="button" class="sticker-button" onclick="toggleStickers()">😀</button>
+            <button type="submit">Отправить</button>
+        </form>
+        <div class="sticker-container" id="sticker-container">
+            {% for sticker in stickers %}
+                <img src="{% static 'stickers/' %}{{ sticker }}" alt="{{ sticker }}" onclick="selectSticker('{% static 'stickers/' %}{{ sticker }}')">
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Scroll chat to the bottom on page load
+            const chatMessages = document.getElementById("chat-messages");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Handle enter and shift+enter key presses
+            const chatInput = document.querySelector(".chat-input textarea");
+            const chatForm = document.getElementById("chat-form");
+
+            chatInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    chatForm.submit();
+                } else if (event.key === "Enter" && event.shiftKey) {
+                    // Let the event happen to add a new line
+                } else {
+                    // Adjust the height of the textarea
+                    setTimeout(function() {
+                        chatInput.style.height = "auto";
+                        chatInput.style.height = (chatInput.scrollHeight) + "px";
+                    }, 0);
+                }
+            });
+
+            // Limit the textarea to 8 lines
+            chatInput.addEventListener("input", function() {
+                const maxHeight = 8 * 24; // Assuming 24px per line
+                if (chatInput.scrollHeight > maxHeight) {
+                    chatInput.style.overflowY = "scroll";
+                } else {
+                    chatInput.style.overflowY = "hidden";
+                }
+            });
+
+            // Display attached file name
+            const fileInput = document.getElementById('file-input');
+            fileInput.addEventListener('change', function() {
+                const fileName = fileInput.files[0].name;
+                document.getElementById('attached-file-name').textContent = fileName;
+                document.getElementById('attached-file-container').style.display = 'flex';
+            });
+        });
+
+        function selectSticker(stickerUrl) {
+            document.getElementById('sticker-input').value = stickerUrl;
+            document.getElementById('chat-form').submit();
+        }
+
+        function toggleStickers() {
+            const stickerContainer = document.getElementById('sticker-container');
+            stickerContainer.classList.toggle('show-stickers');
+        }
+
+        function removeAttachedFile() {
+            const fileInput = document.getElementById('file-input');
+            fileInput.value = '';
+            document.getElementById('attached-file-container').style.display = 'none';
+            document.getElementById('attached-file-name').textContent = '';
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <style>
+        .tutor-container, .user-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tutor-container {
+            justify-content: space-between;
+        }
+
+        .user-container {
+            margin-left: 40px; /* Сдвигаем контейнеры учеников вместе с фоном */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-container.no-students {
+            padding-top: 20px; /* Увеличиваем внутренний отступ сверху */
+            padding-bottom: 20px; /* Увеличиваем внутренний отступ снизу */
+            margin-left: 40px; /* Сдвигаем контейнеры учеников вместе с фоном */
+        }
+
+        .profile-image {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .user-info, .tutor-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .user-info div, .tutor-info div {
+            flex: 1; /* Устанавливаем flex для выравнивания содержимого слева */
+        }
+
+        .write-btn {
+            background-color: #00bfff;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .write-btn:hover {
+            background-color: #0078a8;
+        }
+
+        .students-list {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .students-list.show {
+            display: block !important;
+            background-color: rgba(0, 255, 0, 0.1) !important;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .tutor-info a {
+            font-size: 1.5rem;
+            color: black;
+            text-decoration: none;
+        }
+
+        .tutor-info a:hover {
+            text-decoration: underline;
+        }
+
+        .tutor-info p, .user-info p {
+            margin: 0;
+            line-height: 1.6;
+        }
+    </style>
+    <h1>Моя команда</h1><br>
+
+    {% if tutors %}
+        {% for tutor, students in tutors.items %}
+            <div class="tutor-container" data-tutor-id="{{ tutor.id }}">
+                <div class="tutor-info">
+                    <img src="{% if tutor.profile_image %}{{ tutor.profile_image.url }}{% else %}/images/defaultpic.png{% endif %}" alt="Фото профиля" class="profile-image">
+                    <div>
+                        <a href="{% url 'profile' user_id=tutor.id %}">{{ tutor.last_name }} {{ tutor.first_name }} {{ tutor.fathersname }}</a>
+                        <p><strong>Регион проживания:</strong> {{ tutor.region }}</p>
+                        <p><strong>Дисциплины:</strong>
+                            {% for curdir in tutor.curdir.all %}
+                                {{ curdir.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p><strong>Учебное заведение:</strong> {% if tutor.role == 'participator' %}{{ tutor.school }}{% else %}{{ tutor.university }}{% endif %}</p>
+                    </div>
+                </div>
+                <div>
+                    <button onclick="location.href='{% url 'conversation_detail' tutor.id %}'" class="write-btn">Написать</button>
+                    <button class="toggle-btn" onclick="toggleStudents({{ tutor.id }})">↓</button>
+                </div>
+            </div>
+            <div id="students-{{ tutor.id }}" class="students-list">
+                {% if students %}
+                    {% for student in students %}
+                        <div class="user-container">
+                            <div class="user-info">
+                                <img src="{% if student.profile_image %}{{ student.profile_image.url }}{% else %}/images/defaultpic.png{% endif %}" alt="Фото профиля" class="profile-image">
+                                <div>
+                                    <a href="{% url 'profile' user_id=student.id %}" style="color: black; text-decoration: none; font-size: 16pt">{{ student.last_name }} {{ student.first_name }} {{ student.fathersname }}</a>
+                                    <p><strong>Регион проживания:</strong> {{ student.region }}</p>
+                                    <p><strong>Дисциплины:</strong>
+                                        {% for curdir in student.curdir.all %}
+                                            {{ curdir.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p><strong>Учебное заведение:</strong> {% if student.role == 'participator' %}{{ student.school }}{% else %}{{ student.university }}{% endif %}</p>
+                                </div>
+                            </div>
+                            <button onclick="location.href='{% url 'conversation_detail' student.id %}'" class="write-btn">Написать</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="user-container no-students">
+                        <p>Нет привязанных учеников</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Список участников на вашем направлении пуст.</p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Script loaded');  // Проверяем, загружается ли скрипт
+
+        function toggleStudents(tutorId) {
+            console.log('toggleStudents called with tutorId:', tutorId);
+            const studentsList = document.getElementById('students-' + tutorId);
+            const toggleBtn = document.querySelector(`.tutor-container[data-tutor-id="${tutorId}"] .toggle-btn`);
+            console.log('studentsList:', studentsList);  // Выводим элемент списка студентов
+            console.log('toggleBtn:', toggleBtn);  // Выводим элемент кнопки
+            console.log('Class list before toggle:', studentsList.classList); // Выводим список классов до изменения
+            if (studentsList.classList.contains('show')) {
+                studentsList.classList.remove('show');
+                toggleBtn.innerHTML = '↓';
+            } else {
+                studentsList.classList.add('show');
+                toggleBtn.innerHTML = '↑';
+            }
+            console.log('Class list after toggle:', studentsList.classList); // Выводим список классов после изменения
+        }
+
+        const tutorContainers = document.querySelectorAll('.tutor-container');
+        console.log('tutorContainers:', tutorContainers);  // Выводим все контейнеры тьюторов
+        tutorContainers.forEach(function(container) {
+            const toggleBtn = container.querySelector('.toggle-btn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Предотвращаем всплытие события
+                    const tutorId = container.getAttribute('data-tutor-id');
+                    console.log('Tutor container clicked, tutorId:', tutorId);  // Выводим ID тьютора при клике
+                    toggleStudents(tutorId);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

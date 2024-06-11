@@ -1,0 +1,66 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .user-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info img {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .write-btn {
+            background-color: #00bfff;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .write-btn:hover {
+            background-color: #0078a8;
+        }
+    </style>
+    <h1>Мои тьюторы</h1><br>
+    <ul>
+    {% for tutor_student in tutor_students %}
+        <div class="user-container">
+            <div class="user-info">
+                {% if tutor_student.tutor.profile_image %}
+                    <img src="{{ tutor_student.tutor.profile_image.url }}" alt="Фото профиля">
+                {% else %}
+                    <img src="/images/defaultpic.png" alt="Фото профиля">
+                {% endif %}
+                <div>
+                    <a href="{% url 'profile' user_id=tutor_student.tutor.id %}">{{ tutor_student.tutor.last_name }} {{ tutor_student.tutor.first_name }} {{ tutor_student.tutor.fathersname }}</a>
+                    <p><strong>Регион проживания:</strong> {{ tutor_student.tutor.region }}</p>
+                    <p><strong>Дисциплина:</strong>
+                        {% for curdir in tutor_student.tutor.curdir.all %}
+                            {{ curdir.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <a href="{% url 'conversation_detail' tutor_student.tutor.id %}" class="write-btn">Написать</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <li>У вас пока нет тьюторов.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

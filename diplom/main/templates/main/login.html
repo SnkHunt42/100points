@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Вход
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if 'login' in message.tags %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<h2 style="text-align: center;">Вход</h2>
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <form method="post" style="border: 1px solid #ccc; padding: 20px; max-width: 400px; width: 100%; background-color: white;">
+        {% csrf_token %}
+        <div style="margin-bottom: 10px; display: flex; align-items: center;">
+            <label for="email" style="width: 30%;">Email:</label>
+            <div style="width: 70%;">{{ form.email }}</div>
+        </div>
+        <div style="margin-bottom: 10px; display: flex; align-items: center;">
+            <label for="password" style="width: 30%;">Пароль:</label>
+            <div style="width: 70%;">{{ form.password }}</div>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit" style="background-color: #0d6efd; color: #fff; border: none; padding: 10px 20px;">Войти</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

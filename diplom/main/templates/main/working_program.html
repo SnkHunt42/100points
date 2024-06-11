@@ -1,0 +1,149 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Рабочая программа
+{% endblock %}
+
+{% block content %}
+<style>
+    .tutor-container, .plan-container {
+        background-color: rgba(0, 191, 255, 0.1);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tutor-container {
+        justify-content: space-between;
+    }
+
+    .plan-container {
+        margin-left: 40px;
+        flex-direction: column;
+    }
+
+    .profile-image {
+        max-width: 100px;
+        border-radius: 50%;
+    }
+
+    .tutor-info, .plan-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+    }
+
+    .tutor-info div, .plan-info div {
+        flex: 1;
+    }
+
+    .write-btn {
+        background-color: #00bfff;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        border: none;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .write-btn:hover {
+        background-color: #0078a8;
+    }
+
+    .plans-list {
+        display: none;
+        margin-top: 10px;
+    }
+
+    .plans-list.show {
+        display: block !important;
+    }
+
+    .toggle-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .tutor-info a {
+        font-size: 1.5rem;
+        color: black;
+        text-decoration: none;
+    }
+
+    .tutor-info a:hover {
+        text-decoration: underline;
+    }
+
+    .tutor-info p, .plan-info p {
+        margin: 0;
+        line-height: 1.6;
+    }
+</style>
+
+<h1>Рабочая программа</h1><br>
+
+{% for tutor, plans in tutors.items %}
+    <div class="tutor-container" data-tutor-id="{{ tutor.id }}">
+        <div class="tutor-info">
+            <img src="{% if tutor.profile_image %}{{ tutor.profile_image.url }}{% else %}/images/defaultpic.png{% endif %}" alt="Фото профиля" class="profile-image">
+            <div>
+                <a href="{% url 'profile' user_id=tutor.id %}">{{ tutor.last_name }} {{ tutor.first_name }} {{ tutor.fathersname }}</a>
+                <p><strong>Регион проживания:</strong> {{ tutor.region }}</p>
+                <p><strong>Дисциплины:</strong>
+                    {% for curdir in tutor.curdir.all %}
+                        {{ curdir.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p><strong>Учебное заведение:</strong> {% if tutor.role == 'participator' %}{{ tutor.school }}{% else %}{{ tutor.university }}{% endif %}</p>
+            </div>
+        </div>
+        <div>
+            <button onclick="location.href='{% url 'conversation_detail' tutor.id %}'" class="write-btn">Написать</button>
+            <button class="toggle-btn" onclick="togglePlans({{ tutor.id }})">↓</button>
+        </div>
+    </div>
+    <div id="plans-{{ tutor.id }}" class="plans-list">
+        {% if plans %}
+            {% for plan in plans %}
+                <div class="plan-container">
+                    <div class="plan-info">
+                        <div>
+                            <h3>{{ plan.title }}</h3>
+                            <p>{{ plan.description }}</p>
+                            <p><strong>Дедлайн:</strong> {{ plan.deadline }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="plan-container">
+                <p>Учебный план пока что не составлен.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function togglePlans(tutorId) {
+        const plansList = document.getElementById('plans-' + tutorId);
+        const toggleBtn = document.querySelector(`.tutor-container[data-tutor-id="${tutorId}"] .toggle-btn`);
+        if (plansList.classList.contains('show')) {
+            plansList.classList.remove('show');
+            toggleBtn.innerHTML = '↓';
+        } else {
+            plansList.classList.add('show');
+            toggleBtn.innerHTML = '↑';
+        }
+    }
+</script>
+{% endblock %}

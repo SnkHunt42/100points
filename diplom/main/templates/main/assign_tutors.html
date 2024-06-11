@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Назначение тьюторов{% endblock %}
+
+{% block content %}
+<h1>Назначение тьюторов</h1>
+<form method="POST" action="{% url 'confirm_assignment' %}">
+    {% csrf_token %}
+    <h2>Участники</h2>
+    <ul>
+        {% for student in students %}
+            <li>
+                <img src="{{ student.profile_image_url }}" alt="{{ student.get_full_name }}" height="50">
+                {{ student.get_full_name }}
+                <input type="hidden" name="students" value="{{ student.id }}">
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>Тьюторы</h2>
+    <ul>
+        {% for tutor in tutors %}
+            <li>
+                <input type="radio" name="tutor" value="{{ tutor.id }}" required>
+                <img src="{{ tutor.profile_image_url }}" alt="{{ tutor.get_full_name }}" height="50">
+                {{ tutor.get_full_name }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Распределить</button>
+</form>
+{% endblock %}

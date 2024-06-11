@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h1>{{ task.title }}</h1>
+    <p>{{ task.desc }}</p>
+    <p>Дедлайн: {{ task.dueto }}</p>
+
+    <h2>Отправленные решения</h2>
+    {% if submissions %}
+        <ul>
+            {% for submission in submissions %}
+                <li>
+                    {{ submission.student.last_name }} {{ submission.student.first_name }} {{ submission.student.fathersname }} - {{ submission.submitted_at }}
+                    {% if submission.file %}
+                        <a href="{{ submission.file.url }}">Скачать файл</a>
+                    {% endif %}
+                    <p>{{ submission.text }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Решения отсутствуют.</p>
+    {% endif %}
+{% endblock %}

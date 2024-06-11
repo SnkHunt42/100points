@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h1>{{ task.title }}</h1>
+    <p>{{ task.desc }}</p>
+    <p>Дедлайн: {{ task.dueto }}</p>
+
+    {% if task.file %}
+        <p>Прикрепленный файл: <a href="{{ task.file.url }}">{{ task.file.name|slice:"6:" }}</a></p>
+    {% endif %}
+
+    <h2>Отправка задания</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Отправить задание</button>
+    </form>
+{% endblock %}

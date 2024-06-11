@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h1>Задания</h1>
+
+    <div class="task-list">
+        {% for task in tasks %}
+            <div class="task-container">
+                <div class="task-info">
+                    <h3>{{ task.title }}</h3>
+                    <p><strong>Дедлайн:</strong> {{ task.dueto }}</p>
+                </div>
+                <div class="task-actions">
+                    <a href="{% url 'view_task_tutor' task.id %}" class="btn btn-secondary">Просмотреть</a>
+                    <a href="{% url 'edit_task' task.id %}" class="btn btn-secondary">Редактировать</a>
+                    <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>Задания отсутствуют.</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated and user.role == 'tutor' %}
+        <a href="{% url 'create_task' %}" class="btn btn-primary">Добавить задание</a>
+    {% endif %}
+
+    <style>
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-info h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .task-actions .btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

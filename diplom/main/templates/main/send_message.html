@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Отправить сообщение
+{% endblock %}
+
+{% block content %}
+    <h1>Отправить сообщение</h1>
+    <form id="message-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+
+    <h2>Выберите стикер</h2>
+    <div class="stickers">
+        {% for sticker in stickers %}
+            <img src="{{ sticker.url }}" alt="{{ sticker.name }}" onclick="selectSticker('{{ sticker.name }}')">
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function selectSticker(stickerName) {
+        document.getElementById('id_sticker').value = stickerName;
+        document.getElementById('message-form').submit();
+    }
+</script>
+{% endblock %}

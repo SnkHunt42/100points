@@ -1,0 +1,73 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <h1>Учебный план</h1><br>
+    {% if can_add %}
+        <a href="{% url 'add_study_plan' %}" class="btn btn-primary">Добавить пункт учебного плана</a>
+    {% endif %}
+    <div class="plan-list">
+    {% if study_plans %}
+        {% for plan in study_plans %}
+            <div class="plan-container">
+                <div class="plan-info">
+                    <h3>{{ plan.title }}</h3>
+                    <p>{{ plan.description }}</p>
+                    <p><strong>Дедлайн:</strong> {{ plan.deadline }}</p>
+                </div>
+                <div class="plan-actions">
+                    {% if can_edit %}
+                        <a href="{% url 'edit_study_plan' plan.id %}" class="btn btn-secondary">Редактировать</a>
+                        <form method="post" action="{% url 'delete_study_plan' plan.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Учебный план пока что не составлен.</p>
+    {% endif %}
+    </div>
+
+    <style>
+        .plan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .plan-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-info h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .plan-actions .btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}

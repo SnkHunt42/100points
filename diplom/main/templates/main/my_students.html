@@ -1,0 +1,70 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .user-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info img {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .write-btn {
+            background-color: #00bfff;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .write-btn:hover {
+            background-color: #0078a8;
+        }
+    </style>
+    <h1>Мои ученики</h1><br>
+    <ul>
+    {% for student in students %}
+        <div class="user-container">
+            <div class="user-info">
+                {% if student.profile_image %}
+                    <img src="{{ student.profile_image.url }}" alt="Фото профиля">
+                {% else %}
+                    <img src="/images/defaultpic.png" alt="Фото профиля">
+                {% endif %}
+                <div>
+                    <a href="{% url 'profile' user_id=student.id %}">{{ student.last_name }} {{ student.first_name }} {{ student.fathersname }}</a>
+                    <p><strong>Регион проживания:</strong> {{ student.region }}</p>
+                    <p><strong>Дисциплины:</strong>
+                        {% for curdir in student.curdir.all %}
+                            {{ curdir.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><strong>Учебное заведение:</strong> {% if student.role == 'participator' %}{{ student.school }}{% else %}{{ student.university }}{% endif %}</p>
+                    <a href="{% url 'conversation_detail' student.id %}" class="write-btn">Написать</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <li>У вас пока нет учеников.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

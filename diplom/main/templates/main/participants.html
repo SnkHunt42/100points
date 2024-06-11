@@ -1,0 +1,236 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .tutor-container, .user-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: left;
+            gap: 10px;
+        }
+
+        .tutor-container {
+            justify-content: space-between;
+        }
+
+        .user-container {
+            margin-left: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-container.no-students {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            margin-left: 40px;
+        }
+
+        .profile-image {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .user-info, .tutor-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .user-info div, .tutor-info div {
+            flex: 1;
+            text-align: left;
+        }
+
+        .write-btn {
+            background-color: #00bfff;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .write-btn:hover {
+            background-color: #0078a8;
+        }
+
+        .students-list {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .students-list.show {
+            display: block !important;
+            background-color: rgba(0, 255, 0, 0.1) !important;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .tutor-info a {
+            font-size: 1.5rem;
+            color: black;
+            text-decoration: none;
+        }
+
+        .tutor-info a:hover {
+            text-decoration: underline;
+        }
+
+        .tutor-info p, .user-info p {
+            margin: 0;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 20px;
+            padding-bottom: 20px;
+        }
+
+        .pagination .step-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #333;
+            box-sizing: border-box;
+        }
+
+        .pagination .current {
+            background-color: #00bfff;
+            color: white;
+        }
+
+        .pagination a:hover {
+            background-color: #0078a8;
+            color: white;
+        }
+
+        .pagination .disabled {
+            background-color: #f0f0f0;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+
+    <h1>Участники проекта</h1><br>
+
+    <form method="GET" action="{% url 'participants' %}">
+        <input type="text" name="q" placeholder="Поиск по ФИО" value="{{ request.GET.q }}">
+
+        <br><label for="university">Университет:</label><br>
+        <select name="university" id="university">
+            <option value="">Выберите университет</option>
+            {% for university in universities %}
+                <option value="{{ university.id }}" {% if university.id|stringformat:"s" == request.GET.university %}selected{% endif %}>
+                    {{ university.name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="region">Регион:</label><br>
+        <select name="region" id="region">
+            <option value="">Выберите регион</option>
+            {% for region in regions %}
+                <option value="{{ region.id }}" {% if region.id|stringformat:"s" == request.GET.region %}selected{% endif %}>
+                    {{ region.name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="curdir">Дисциплина:</label><br>
+        <select name="curdir" id="curdir">
+            <option value="">Выберите дисциплину</option>
+            {% for curdir in curdirs %}
+                <option value="{{ curdir.id }}" {% if curdir.id|stringformat:"s" == request.GET.curdir %}selected{% endif %}>
+                    {{ curdir.name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit">Поиск</button>
+    </form>
+
+    {% for user in page_obj %}
+        <div class="user-container">
+            <div class="user-info">
+                {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="Фото профиля" class="profile-image">
+                {% else %}
+                    <img src="/images/defaultpic.png" alt="Фото профиля" class="profile-image">
+                {% endif %}
+                <div>
+                    <a href="{% url 'profile' user_id=user.id %}">{{ user.last_name }} {{ user.first_name }} {{ user.fathersname }}</a>
+                    <p><strong>Роль:</strong> {{ user.get_role_display }}</p>
+                    <p><strong>Регион проживания:</strong> {{ user.region.name }}</p>
+                    <p><strong>Дисциплины:</strong>
+                        {% for curdir in user.curdir.all %}
+                            {{ curdir.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><strong>Учебное заведение:</strong> {% if user.role == 'participator' %}{{ user.school }}{% else %}{{ user.university.name }}{% endif %}</p>
+                    <a href="{% url 'conversation_detail' user.id %}" class="write-btn">Написать</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Нет результатов</p>
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.university %}&university={{ request.GET.university }}{% endif %}{% if request.GET.region %}&region={{ request.GET.region }}{% endif %}{% if request.GET.curdir %}&curdir={{ request.GET.curdir }}{% endif %}">&laquo;</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.university %}&university={{ request.GET.university }}{% endif %}{% if request.GET.region %}&region={{ request.GET.region }}{% endif %}{% if request.GET.curdir %}&curdir={{ request.GET.curdir }}{% endif %}">&lt;</a>
+            {% else %}
+                <span class="disabled">&laquo;</span>
+                <span class="disabled">&lt;</span>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="current">{{ num }}</span>
+                {% else %}
+                    <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.university %}&university={{ request.GET.university }}{% endif %}{% if request.GET.region %}&region={{ request.GET.region }}{% endif %}{% if request.GET.curdir %}&curdir={{ request.GET.curdir }}{% endif %}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.university %}&university={{ request.GET.university }}{% endif %}{% if request.GET.region %}&region={{ request.GET.region }}{% endif %}{% if request.GET.curdir %}&curdir={{ request.GET.curdir }}{% endif %}">&gt;</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.university %}&university={{ request.GET.university }}{% endif %}{% if request.GET.region %}&region={{ request.GET.region }}{% endif %}{% if request.GET.curdir %}&curdir={{ request.GET.curdir }}{% endif %}">&raquo;</a>
+            {% else %}
+                <span class="disabled">&gt;</span>
+                <span class="disabled">&raquo;</span>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

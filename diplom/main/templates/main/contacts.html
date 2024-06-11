@@ -1,0 +1,100 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .question-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .question-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            justify-content: flex-start; /* Прижимаем содержимое к левому краю */
+        }
+
+        .question-info div {
+            flex: 1; /* Устанавливаем flex для выравнивания содержимого слева */
+            text-align: left; /* Прижимаем текст к левому краю */
+        }
+
+        .write-btn, .delete-btn {
+            background-color: #00bfff;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .write-btn:hover, .delete-btn:hover {
+            background-color: #0078a8;
+        }
+
+        @media (max-width: 768px) {
+            .headt {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+    <div class="headt">
+        <h1>Контакты</h1>
+    </div>
+    <div class = "contentsts">
+        <h4>Вы находитесь на странице контактов! Ниже приведены все ссылки для контакта с нами!</h4>
+        <h4>Переходите по ссылкам или задайте нам вопрос прямо здесь!</h4>
+        <h5>Группа ВКонтакте: <a href="https://vk.com/hundred_points_cool" target="_blank">Сто баллов - круто</a></h5>
+
+        {% if not can_delete %}
+            <h2>Отправить вопрос</h2>
+            <form method="post" action="{% url 'contacts' %}">
+                {% csrf_token %}
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+                <label for="question">Ваш вопрос:</label><br>
+                <textarea id="question" name="question" required></textarea><br>
+                <button type="submit" class="write-btn">Отправить вопрос</button>
+            </form>
+        {% endif %}
+
+        {% if can_delete %}
+            {% if questions %}
+                <h2>Вопросы</h2>
+                {% for question in questions %}
+                    <div class="question-container">
+                        <div class="question-info">
+                            <div>
+                                <p><strong>Email:</strong> {{ question.email }}</p>
+                                <p><strong>Вопрос:</strong> {{ question.question }}</p>
+                            </div>
+                        </div>
+                        <form method="post" action="{% url 'delete_question' question.id %}" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-btn">Удалить</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

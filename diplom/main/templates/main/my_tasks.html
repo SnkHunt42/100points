@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Мои задания</h1>
+    {% if tasks %}
+        <div class="task-list">
+            {% for task in tasks %}
+                <div class="task-container">
+                    <div class="task-info">
+                        <h3>{{ task.title }}</h3>
+                        <p>Дедлайн: {{ task.dueto }}</p>
+                    </div>
+                    <a href="{% url 'view_task_student' task.id %}" class="write-btn">Просмотреть</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Задания отсутствуют.</p>
+    {% endif %}
+
+    <style>
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-container {
+            background-color: rgba(0, 191, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-info h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .write-btn {
+            background-color: #00bfff;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .write-btn:hover {
+            background-color: #0078a8;
+        }
+    </style>
+{% endblock %}
